@@ -74,3 +74,24 @@
 .detail-development > span { font-size:120px; }
 .development-status { border:1px solid var(--hunter); padding:12px 18px; width:fit-content; }
 @media(max-width:760px) { .archive-shelf { --cover-width:147px; --spine-width:40px; } .tape-cover > strong { font-size:21px; } .tape-spine strong { font-size:17px; } .archive-index { grid-template-columns:repeat(9,minmax(0,1fr)); } .archive-index strong { display:none; } .archive-index button { min-height:44px; } }
+
+/* Let the mobile shelf use the entire screen, independently of the nav gutter. */
+@media (max-width:760px) {
+  .archive.section { padding-inline:0; }
+  .archive-header { margin-inline-start:var(--nav-clearance); }
+  .archive-shelf {
+    margin-inline:0;
+    --cover-width:clamp(116px,36vw,168px);
+    --spine-width:clamp(23px,7vw,38px);
+    --spine-step:clamp(27px,9vw,49px);
+  }
+  .archive-tape[data-mobile-hidden] { display:none; }
+  .archive-tape,.archive-tape.is-active {
+    transform:translate(calc(var(--side) * (var(--cover-width) / 2 + (var(--distance) - .5) * var(--spine-step) + 2px)),calc(var(--y) * var(--tape-height))) scale(var(--scale));
+  }
+  .archive-tape.is-active { transform:none; }
+  .archive-tape.is-active .tape-object { width:100%; left:0; transform:none; }
+  .archive-tape.is-active .tape-cover { left:0; transform:none; }
+  .archive-tape.is-active .tape-spine { visibility:hidden; }
+  .archive-caption { margin-inline:auto; width:calc(100% - 32px); max-width:480px; }
+}

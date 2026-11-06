@@ -383,3 +383,4 @@ main { margin-left:0; padding-top:0; }
     transform:translate(-20%,calc(-59.5% + 4px));
   }
 }
+@media (max-width:760px) { main { overflow-x:clip; } }
