@@ -23,7 +23,9 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
     const vec = new THREE.Vector3()
     const ang = new THREE.Vector3()
     const rot = new THREE.Vector3()
-    const dir = new THREE.Vector3()
+    const dragPlane = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1)))
+    const pointerId = useRef(null)
+    const canvas = useThree(state => state.gl.domElement)
 
     // Physics properties for all segments
     const segmentProps = {
@@ -51,6 +53,22 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
     const [dragged, drag] = useState(false)
     const [hovered, hover] = useState(false)
 
+    useEffect(() => {
+        function endDrag(event) {
+            if (pointerId.current !== event.pointerId) return
+            pointerId.current = null
+            drag(false)
+        }
+        canvas.addEventListener('pointerup', endDrag)
+        canvas.addEventListener('pointercancel', endDrag)
+        canvas.addEventListener('lostpointercapture', endDrag)
+        return () => {
+            canvas.removeEventListener('pointerup', endDrag)
+            canvas.removeEventListener('pointercancel', endDrag)
+            canvas.removeEventListener('lostpointercapture', endDrag)
+        }
+    }, [canvas])
+
     // Link joints together forming a chain
     useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1])
     useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1])
@@ -68,11 +86,9 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
     useFrame((state, delta) => {
         // If being dragged, set the kinematic translation of the card manually to follow mouse/pointer
         if (dragged) {
-            vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera)
-            dir.copy(vec).sub(state.camera.position).normalize()
-            vec.add(dir.multiplyScalar(state.camera.position.length()))
-
-                ;[card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp())
+            state.raycaster.setFromCamera(state.pointer, state.camera)
+            state.raycaster.ray.intersectPlane(dragPlane.current, vec)
+            ;[card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp())
             card.current?.setNextKinematicTranslation({
                 x: vec.x - dragged.x,
                 y: vec.y - dragged.y,
@@ -141,11 +157,11 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
                         position={[0, -1.2, -0.05]}
                         onPointerOver={() => hover(true)}
                         onPointerOut={() => hover(false)}
-                        onPointerUp={(e) => {
-                            e.target.releasePointerCapture(e.pointerId)
-                            drag(false)
-                        }}
                         onPointerDown={(e) => {
+                            if (pointerId.current !== null || e.button !== 0) return
+                            e.stopPropagation()
+                            pointerId.current = e.pointerId
+                            dragPlane.current.constant = -e.point.z
                             e.target.setPointerCapture(e.pointerId)
                             drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())))
                         }}
