@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
 import Band from './Band'
+import TouchBadge from './TouchBadge'
 import ProjectArchive from './ProjectArchive'
 import ContactLink from './ContactLink'
 import FooterCharacter from './FooterCharacter'
@@ -56,6 +57,13 @@ export default function App() {
             { transform:'none' },
         ], { duration:520, easing:'ease-in-out' })
     }
+    const [touchLayout, setTouchLayout] = useState(() => matchMedia('(max-width:760px), (pointer:coarse)').matches)
+    useEffect(() => {
+        const query = matchMedia('(max-width:760px), (pointer:coarse)')
+        const change = () => setTouchLayout(query.matches)
+        query.addEventListener('change', change)
+        return () => query.removeEventListener('change', change)
+    }, [])
     const badgeElement = useRef(null)
     const [projectPressed, setProjectPressed] = useState(false)
     const pressTimer = useRef(null)
@@ -100,7 +108,7 @@ export default function App() {
                     </div>
                     <div className="badge-panel">
                         <div className="badge-scene" ref={badgeElement}>
-                            {badgeMotion.reduced ? <div className="static-badge"><div className="static-ribbon" /><img src="/Card.jpg" alt="IAMDANZI profile photograph" width="801" height="1068" /></div> :
+                            {touchLayout || badgeMotion.reduced ? <TouchBadge /> :
                             <Canvas frameloop={badgeMotion.visible ? 'always' : 'never'} aria-label="Draggable IAMDANZI photo badge on a GitHub ribbon" camera={{ position: [0, 0, 13], fov: 25 }} dpr={[1, 1.5]} gl={{ alpha: true }}>
                                 <ambientLight intensity={Math.PI} />
                                 <Physics paused={!badgeMotion.visible} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
