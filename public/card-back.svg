@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <rect width="900" height="1200" fill="#132a13"/>
+  <rect x="48" y="48" width="804" height="1104" rx="18" fill="none" stroke="#4f772d" stroke-width="2"/>
+  <g font-family="Arial, sans-serif">
+    <text x="88" y="130" fill="#90a955" font-size="23" letter-spacing="5">FULL-STACK DEVELOPER</text>
+    <text x="84" y="228" fill="#ecf39e" font-size="78" font-weight="700" letter-spacing="1">IAMDANZI</text>
+    <text x="88" y="284" fill="#ecf39e" font-size="29">Four published projects. More in the making.</text>
+    <path d="M88 330H812" stroke="#4f772d" stroke-width="2"/>
+    <g fill="#90a955" font-size="22" letter-spacing="3">
+      <text x="88" y="385">01 / STREAMING PLATFORM</text>
+      <text x="88" y="524">02 / E-COMMERCE</text>
+      <text x="88" y="663">03 / EXHIBITION WEBSITE</text>
+      <text x="88" y="802">04 / CHURCH WEBSITE</text>
+    </g>
+    <g fill="#ecf39e" font-size="34" font-weight="700">
+      <text x="88" y="432">The King and the Code</text>
+      <text x="88" y="571">Freedom Select</text>
+      <text x="88" y="710">Osborns Exhibition</text>
+      <text x="88" y="849">Pastor Tony Osborn Ministries</text>
+    </g>
+    <g fill="#ecf39e" font-size="27">
+      <text x="88" y="471">thekingandthecode.com</text>
+      <text x="88" y="610">freedomselect.co.tz</text>
+      <text x="88" y="749">osbornsexhibition.co.tz</text>
+      <text x="88" y="888">pastortonyosbornministries.org</text>
+    </g>
+    <path d="M88 930H812" stroke="#4f772d" stroke-width="2"/>
+    <text x="88" y="987" fill="#ecf39e" font-size="28">Additional projects in development.</text>
+    <text x="88" y="1041" fill="#90a955" font-size="22" letter-spacing="3">EXPLORING &amp; GROWING</text>
+    <text x="88" y="1087" fill="#ecf39e" font-size="27">Cybersecurity interest / Telecommunications</text>
+  </g>
+</svg>
+
