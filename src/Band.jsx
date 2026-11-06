@@ -59,10 +59,21 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
             pointerId.current = null
             drag(false)
         }
+        // Only a touch that hit the badge owns the gesture. The surrounding
+        // canvas must leave the browser free to scroll the page normally.
+        function keepBadgeDrag(event) {
+            if (pointerId.current !== null && event.touches.length === 1 && event.cancelable) {
+                event.preventDefault()
+            }
+        }
+        canvas.addEventListener('touchstart', keepBadgeDrag, { passive: false })
+        canvas.addEventListener('touchmove', keepBadgeDrag, { passive: false })
         canvas.addEventListener('pointerup', endDrag)
         canvas.addEventListener('pointercancel', endDrag)
         canvas.addEventListener('lostpointercapture', endDrag)
         return () => {
+            canvas.removeEventListener('touchstart', keepBadgeDrag)
+            canvas.removeEventListener('touchmove', keepBadgeDrag)
             canvas.removeEventListener('pointerup', endDrag)
             canvas.removeEventListener('pointercancel', endDrag)
             canvas.removeEventListener('lostpointercapture', endDrag)

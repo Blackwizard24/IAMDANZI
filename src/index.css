@@ -384,4 +384,4 @@ main { margin-left:0; padding-top:0; }
   }
 }
 @media (max-width:760px) { main { overflow-x:clip; } }
-.badge-scene canvas { touch-action:none; }
+.badge-scene canvas { touch-action:pan-y pinch-zoom; }
